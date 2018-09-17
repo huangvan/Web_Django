@@ -1,4 +1,5 @@
 *.log
 *.temp
-/.idea
-/Include
+.idea
+Include
+.gitignore
