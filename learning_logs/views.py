@@ -4,7 +4,9 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
+import logging
 # Create your views here.
+logging.basicConfig(level=logging.INFO)
 
 
 def check_topic_owner(topic, request):
@@ -84,6 +86,27 @@ def edit_entry(request, entry_id):
     return render(request, 'learning_logs/edit_entry.html', context)
 
 
+@login_required
+def edit_topic(request, topic_id):
+    """编辑既有条目"""
+    topic = Topic.objects.get(id=topic_id)
+    logging.info('topic.id:', topic.id, 'topic_id:', topic_id)
+
+    # 确认请求的主题属于当前用户
+    check_topic_owner(topic, request)
+    if request.method != 'POST':
+    # 初次请求，使用当前条目填充表单
+        form = TopicForm(instance=topic)
+        logging.info('topic:', topic, 'form:', form)
+    else:
+    # POST提交的数据，对数据进行处理
+        form = TopicForm(instance=topic, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('learning_logs:topics'))
+    context = {'topic': topic, 'form': form}
+    logging.info('context:', context)
+    return render(request, 'learning_logs/edit_topic.html', context)
 
 
 

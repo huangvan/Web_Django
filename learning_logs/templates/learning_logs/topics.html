@@ -11,6 +11,9 @@
             <li>
                 <h3>
                     <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
+                    <small>
+                        <a href="{% url 'learning_logs:edit_topic' topic.id %}">edit topic</a>
+                    </small>
                 </h3>
             </li>
         {% empty %}
