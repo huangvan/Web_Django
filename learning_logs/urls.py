@@ -23,7 +23,9 @@ urlpatterns = [
     path('new_topic/', views.new_topic, name='new_topic'),
     path(r'^new_entry/(?P<topic_id>\d+)/$', views.new_entry, name='new_entry'),
     path(r'^edit_entry/(?P<entry_id>\d+)/$', views.edit_entry, name='edit_entry'),
+    path(r'^del_entry/(?P<entry_id>\d+)/$', views.del_entry, name='del_entry'),
     path(r'^edit_topic/(?P<topic_id>\d+)/$', views.edit_topic, name='edit_topic'),
+    path(r'^del_topic/(?P<topic_id>\d+)/$', views.del_topic, name='del_topic'),
 ]
 
 

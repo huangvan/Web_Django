@@ -108,8 +108,27 @@ def edit_topic(request, topic_id):
     logging.info('context:', context)
     return render(request, 'learning_logs/edit_topic.html', context)
 
+@login_required
+def del_entry(request, entry_id):
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+    # 确认请求的主题属于当前用户
+    check_topic_owner(topic, request)
+    Entry.objects.filter(id=entry_id).delete()
+    entries = topic.entry_set.order_by('-date_added')
+    context = {'topic': topic, 'entries': entries}
+    return render(request, 'learning_logs/topic.html', context)
 
 
+def del_topic(request, topic_id):
+    """显示单个主题及其所有的条目"""
+    topic = Topic.objects.get(id=topic_id)
+    # 确认请求的主题属于当前用户
+    check_topic_owner(topic, request)
+    Topic.objects.filter(id=topic_id).delete()
+    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
+    context = {'topics': topics}
+    return render(request, 'learning_logs/topics.html', context)
 
 
 
