@@ -1,9 +1,12 @@
 {% extends 'learning_logs/base.html' %}
+{% load bootstrap3 %}
+
 {% block header %}
     <h2>{{ topic }}</h2>
 {% endblock header %}
 
 {% block content %}
+
 <p>Topic: {{ topic }}</p>
 <p>Entries:</p>
 <p>
@@ -11,13 +14,36 @@
 </p>
 <ul>
     {% for entry in entries %}
+        <button class="btn btn-warning btn-xs" data-href="{% url 'learning_logs:del_entry' entry.id %}" data-toggle="modal" data-target="#confirm-delete">
+        删除记录
+        </button>
+        <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        请确认
+                    </div>
+                    <div class="modal-body">
+                        确认删除该记录吗？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <a class="btn btn-danger btn-ok">确认</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $('#confirm-delete').on('show.bs.modal', function(e) {
+                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            });
+        </script>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3>
                     {{ entry.date_added|date:'M d, Y H:i' }}
                     <small>
                         <a href="{% url 'learning_logs:edit_entry' entry.id %}">edit entry</a>
-                        <a href="{% url 'learning_logs:del_entry' entry.id %}">delete entry</a>
                     </small>
                 </h3>
             </div>
