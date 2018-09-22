@@ -14,21 +14,22 @@
 </p>
 <ul>
     {% for entry in entries %}
+        <a class="btn btn-primary btn-xs" href="{% url 'learning_logs:edit_entry' entry.id %}">edit entry</a>
         <button class="btn btn-warning btn-xs" data-href="{% url 'learning_logs:del_entry' entry.id %}" data-toggle="modal" data-target="#confirm-delete">
-        删除记录
+        delete entry
         </button>
         <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        请确认
+                        Please confirm
                     </div>
                     <div class="modal-body">
-                        确认删除该记录吗？
+                        Want to delete this record?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <a class="btn btn-danger btn-ok">确认</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger btn-ok">Confirm</a>
                     </div>
                 </div>
             </div>
@@ -42,9 +43,6 @@
             <div class="panel-heading">
                 <h3>
                     {{ entry.date_added|date:'M d, Y H:i' }}
-                    <small>
-                        <a href="{% url 'learning_logs:edit_entry' entry.id %}">edit entry</a>
-                    </small>
                 </h3>
             </div>
             <div class="panel-body">
